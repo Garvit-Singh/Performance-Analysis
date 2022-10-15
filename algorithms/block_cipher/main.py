@@ -1,4 +1,6 @@
 import time
+import matplotlib.pyplot as plt
+
 from aes import *
 from des3 import *
 from blowfish import *
@@ -37,9 +39,13 @@ if __name__ == '__main__':
         # 'n2r5u8x/A?D(G+KbPeShVmYq3s6v9y$B'
     ]
 
+    x = [1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384]
+
     # rows fill
     for k in keys:
+
         print('Key Length : ', len(k)*8)
+
         for algo in algorithms:
             print(algo, end='\n')
 
@@ -82,16 +88,12 @@ if __name__ == '__main__':
                     print('Wrong Decryption')
                     break
 
-            print('Encryption Time: ')
-            for e in encrypt_time:
-                print(e, end='\t')
-            print(end='\n')
+            # plot curve for each algorithm
+            plt.plot(x, encrypt_time, label=algo)
+            # plot curve for each algorithm
+            plt.plot(x, decrypt_time, linestyle='dashed', label=algo)
 
-            print('Decryption Time: ')
-            for d in decrypt_time:
-                print(d, end='\t')
-            print(end='\n')
-
-            print(end='\n')
-
-        print(end = '\n\n\n')
+        # show plot
+        plt.legend()
+        plt.show()
+        print(end = '\n')
