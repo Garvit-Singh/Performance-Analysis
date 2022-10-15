@@ -1,4 +1,3 @@
-import binascii
 import struct
 import numpy as np
 
