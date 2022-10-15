@@ -2,6 +2,7 @@ import time
 import matplotlib.pyplot as plt
 
 from aes import *
+from rc2 import *
 from des3 import *
 from blowfish import *
 
@@ -30,7 +31,8 @@ if __name__ == '__main__':
     algorithms = [
         'AES',
         '3DES', 
-        'BLOWFISH'
+        'BLOWFISH',
+        'ARC2'
     ]
 
     keys = [
@@ -57,8 +59,8 @@ if __name__ == '__main__':
                 enc = DES3Cryptor(k)
             elif(algo == 'BLOWFISH'):
                 enc = BlowfishCryptor(k)
-            elif(algo == 'PRESENT'):
-                pass
+            elif(algo == 'ARC2'):
+                enc = RC2Cryptor(k)
 
             encrypt_time = []
             decrypt_time = []
