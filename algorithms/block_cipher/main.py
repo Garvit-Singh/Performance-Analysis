@@ -5,6 +5,7 @@ from aes import *
 from rc2 import *
 from des3 import *
 from blowfish import *
+from present import *
 
 if __name__ == '__main__':
     
@@ -32,12 +33,13 @@ if __name__ == '__main__':
         'AES',
         '3DES', 
         'BLOWFISH',
-        'ARC2'
+        'ARC2',
+        'PRESENT'
     ]
 
     keys = [
         b'gVkYp3s6v9y$B&E)',
-        b'kXn2r5u8z%C*F-JaNdRgUkXp', 
+        # b'kXn2r5u8z%C*F-JaNdRgUkXp', 
         # 'n2r5u8x/A?D(G+KbPeShVmYq3s6v9y$B'
     ]
 
@@ -61,6 +63,8 @@ if __name__ == '__main__':
                 enc = BlowfishCryptor(k)
             elif(algo == 'ARC2'):
                 enc = RC2Cryptor(k)
+            elif(algo == 'PRESENT'):
+                enc = PresentCryptor(k)
 
             encrypt_time = []
             decrypt_time = []
