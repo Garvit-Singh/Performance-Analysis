@@ -34,12 +34,12 @@ if __name__ == '__main__':
         '3DES', 
         'BLOWFISH',
         'ARC2',
-        'PRESENT'
+        # 'PRESENT'
     ]
 
     keys = [
         b'gVkYp3s6v9y$B&E)',
-        # b'kXn2r5u8z%C*F-JaNdRgUkXp', 
+        b'kXn2r5u8z%C*F-JaNdRgUkXp', 
         # 'n2r5u8x/A?D(G+KbPeShVmYq3s6v9y$B'
     ]
 
