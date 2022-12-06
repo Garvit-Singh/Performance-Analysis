@@ -2,6 +2,7 @@ import time
 import matplotlib.pyplot as plt
 
 from fernet import FernetCryptor
+from trivium import TriviumCryptor
 
 if __name__ == '__main__':
     
@@ -13,7 +14,7 @@ if __name__ == '__main__':
 
     algorithms = [
         'FERNET',
-        # 'TRIVIUM'
+        'TRIVIUM'
     ]
 
     for algo in algorithms:
@@ -24,7 +25,7 @@ if __name__ == '__main__':
         if(algo == 'FERNET'):
             enc = FernetCryptor()
         elif(algo == 'TRIVIUM'):
-            enc = None
+            enc = TriviumCryptor()
 
         encrypt_time = []
         decrypt_time = []

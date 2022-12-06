@@ -1,11 +1,9 @@
-# %%
-import binascii
-import sys
-import os
+# import binascii
+# import sys
+# import os
 from collections import deque
 from itertools import repeat
 
-# %%
 class Trivium:
     def __init__(self, key, iv):
         """in the beginning we need to transform the key as well as the IV.
@@ -80,16 +78,16 @@ class Trivium:
 
         return out
 
-# %%
-def get_bytes_from_file(filename):
-    return open(filename, "rb").read()
+# # %%
+# def get_bytes_from_file(filename):
+#     return open(filename, "rb").read()
 
 def _hex_to_bytes(s):
     _allbytes = dict([("%02X" % i, i) for i in range(256)])
     return [_allbytes[s[i:i+2].upper()] for i in range(0, len(s), 2)]
 
-def bits_to_hex(b):
-    return "".join(["%02X" % sum([b[i + j] << j for j in range(8)]) for i in range(0, len(b), 8)])
+# def bits_to_hex(b):
+#     return "".join(["%02X" % sum([b[i + j] << j for j in range(8)]) for i in range(0, len(b), 8)])
 
 def hex_to_bits(s):
     return [(b >> i) & 1 for b in _hex_to_bytes(s) for i in range(8)]
@@ -102,47 +100,25 @@ def get_next_stream_byte(triv):
         rtn+=int(next_key_bit()) << j
     return rtn
 
-# %%
-def encrypt(file_path, key, iv):
-    KEY = hex_to_bits(key)[::-1]
-    IV = hex_to_bits(iv)[::-1]
-    triv = Trivium(KEY, IV)
-
-    b = get_bytes_from_file(file_path)
-    print ("Encrypting file....")
-    with open("cipher.wav", "wb") as binary_file:
-        for mybyte in b:
-            buffer = bytearray()
-#           print (mybyte,get_next_stream_byte())
-            newbyte = (mybyte ^ get_next_stream_byte(triv)) & 0xFF
+class TriviumCryptor():
+    def __init__(self):
+        self.KEY = "0F62B5085BAE0154A7FA"
+        self.KEY = hex_to_bits(self.KEY)[::-1]
+        self.IV = "288FF65DC42B92F960C7"
+        self.IV = hex_to_bits(self.IV)[::-1]
+    
+    def encrypt(self, message):
+        self.triv = Trivium(self.KEY, self.IV)
+        buffer = bytearray()
+        for mybyte in message:
+            newbyte = (mybyte ^ get_next_stream_byte(self.triv)) & 0xFF
             buffer.append(newbyte)
-            binary_file.write(buffer)
+        return buffer
 
-def decrypt(file_path, key , iv):
-    KEY = hex_to_bits(key)[::-1]
-    IV = hex_to_bits(iv)[::-1]
-    triv = Trivium(KEY, IV)
-
-
-    print ("Reading from cipher file")
-    b = get_bytes_from_file(file_path)
-
-    with open("decipher.wav", "wb") as binary_file:
-        for mybyte in b:
-            buffer = bytearray()
-#           print (mybyte,get_next_stream_byte())
-            newbyte = (mybyte ^ get_next_stream_byte(triv)) & 0xFF
+    def decrypt(self, cipher):
+        self.triv = Trivium(self.KEY, self.IV)
+        buffer = bytearray()
+        for mybyte in cipher:
+            newbyte = (mybyte ^ get_next_stream_byte(self.triv)) & 0xFF
             buffer.append(newbyte)
-            binary_file.write(buffer)
-
-# %%
-k1 = "0F62B5085BAE0154A7FA"
-i1 = "288FF65DC42B92F960C7"
-encrypt("/home/johngalt/Acads/Crypto/trivium/test_audio.wav",k1,i1)
-
-# %%
-k1 = "0F62B5085BAE0154A7FA"
-i1 = "288FF65DC42B92F960C7"
-decrypt("/home/johngalt/Acads/Crypto/trivium/cipher.wav",k1,i1)
-
-
+        return buffer
