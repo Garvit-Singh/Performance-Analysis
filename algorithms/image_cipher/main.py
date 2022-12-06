@@ -1,19 +1,19 @@
 import time
+import cv2
 import matplotlib.pyplot as plt
 
-from fernet import FernetCryptor
+from arnold_map import ArnoldCryptor
 
 if __name__ == '__main__':
     
-    path_dir = '../../voice_files/'
+    path_dir = '../../image_files/'
 
     filename = [
-        'audio.wav'
     ]
 
     algorithms = [
-        'FERNET',
-        # 'TRIVIUM'
+        'ARNOLD',
+        'CHAOTIC'
     ]
 
     for algo in algorithms:
@@ -21,21 +21,20 @@ if __name__ == '__main__':
 
         # choose encryptor
         enc = None
-        if(algo == 'FERNET'):
-            enc = FernetCryptor()
-        elif(algo == 'TRIVIUM'):
+        if(algo == 'ARNOLD'):
+            enc = ArnoldCryptor(key=20)
+        elif(algo == 'CHAOTIC'):
             enc = None
 
         encrypt_time = []
         decrypt_time = []
         
         for f in filename:
-            with open(path_dir + f, 'rb') as fo:
-                plaintext = fo.read()
+            plain_img = cv2.imread(f)
 
             # encryption time
             ts = time.time()
-            ciphertext = enc.encrypt(plaintext)
+            cipher_img = enc.encrypt(plain_img)
             te = time.time()
             enc_time = te - ts
 
@@ -43,15 +42,16 @@ if __name__ == '__main__':
 
             # decryption time
             ts = time.time()
-            decrypttext = enc.decrypt(ciphertext)
+            decrypt_img = enc.decrypt(cipher_img)
             te = time.time()
             dec_time = te - ts
 
             decrypt_time.append(dec_time)
 
             # if decryption fails
-            if(plaintext != decrypttext):
+            if(plain_img != decrypt_img):
                 print('Wrong Decryption')
+                # cv2.imwrite(f.split('.')[0] + "_ArnoldcatEnc.png", decryptimg)
                 break
 
     #     # plot curve for each algorithm
