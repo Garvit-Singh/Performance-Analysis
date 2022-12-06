@@ -9,13 +9,17 @@ if __name__ == '__main__':
     path_dir = '../../voice_files/'
 
     filename = [
-        'audio.wav'
+        'audio1.wav',
+        'audio3.wav',
+        'audio2.wav'
     ]
 
     algorithms = [
         'FERNET',
         'TRIVIUM'
     ]
+
+    x = [1.1, 1.3, 2.6]
 
     for algo in algorithms:
         print(algo, end='\n')
@@ -54,13 +58,14 @@ if __name__ == '__main__':
             if(plaintext != decrypttext):
                 print('Wrong Decryption')
                 break
+        
+        # plot curve for each algorithm
+        plt.plot(x, encrypt_time, label=algo)
+        # plot curve for each algorithm
+        plt.plot(x, decrypt_time, linestyle='dashed', label=algo)
 
-    #     # plot curve for each algorithm
-    #     plt.plot(x, encrypt_time, label=algo)
-    #     # plot curve for each algorithm
-    #     plt.plot(x, decrypt_time, linestyle='dashed', label=algo)
+        # show plot
+        plt.legend()
+        plt.show()
 
-    # # show plot
-    # plt.legend()
-    # plt.show()
-    # print(end = '\n')
+    print(end = '\n')
